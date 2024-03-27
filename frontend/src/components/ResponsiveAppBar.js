@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['My Library', 'Search'];
+const pages = ['Search', 'My Library'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -35,18 +35,17 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{bgcolor: 'white'}}>
+    <AppBar sx={{bgcolor: 'white', color: 'black'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
               fontWeight: 700,
               color: 'orange',
               textDecoration: 'none',
@@ -113,8 +112,10 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block', fontWeight: 700 }}
+                color="inherit"
+                sx={{ ml: 7, fontWeight: 300 }}
+                component="a" // Add this line to make the button act as a link
+                href={`/${page.toLowerCase().replace(' ', '-')}`} // Replace spaces with dashes and make the link lowercase
               >
                 {page}
               </Button>
