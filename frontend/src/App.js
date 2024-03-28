@@ -5,7 +5,7 @@ import MyLibrary from './pages/MyLibrary';
 
 import './App.css';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <header className="App-header">
@@ -13,9 +13,9 @@ function App() {
       </header>
       <BrowserRouter>
         <Routes>
-        <Route path="/" element={<Search />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/my-library" element={<MyLibrary />} />
+          <Route path="/" element={<Search className="Search"/>} />
+          <Route path="/search" element={<Search  className="Search"/>} />
+          <Route path="/my-library" element={<MyLibrary  className="MyLibrary"/>} />
         </Routes>
       </BrowserRouter>
     </div>
