@@ -8,19 +8,20 @@ export class UsersController {
     constructor(private userService: UsersService){}
 
     @Get()
-    getUsers() {
-        return this.userService.fetchUsers();
+    async getUsers() {
+        const users = this.userService.fetchUsers();
+        return users;
     }
 
     @Post()
     @UsePipes(new ValidationPipe)
     createUser(@Body() body: CreateUserDto) {
-        console.log(body);
         return this.userService.createUser(body);
     }
 
     @Get(':id')
-    getUserById(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.fetchUserById(id);
+    async getUserById(@Param('id', ParseIntPipe) id: number) {
+        const user = await this.userService.fetchUserById(id);
+        return user;
     }
 }
