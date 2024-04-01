@@ -5,6 +5,7 @@ import { User } from './typeorm/entities/User';
 import { LibraryEntry } from './typeorm/entities/LibraryEntry';
 import { LibraryEntryModule } from './library-entry/library-entry.module';
 import { AuthModule } from './auth/auth.module';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
   imports: [UsersModule, LibraryEntryModule, TypeOrmModule.forRoot({
@@ -16,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
     database: 'moovy',
     entities: [User, LibraryEntry],
     synchronize: true
-  }), AuthModule],
+  }), AuthModule, MoviesModule],
   controllers: [],
   providers: [],
 })

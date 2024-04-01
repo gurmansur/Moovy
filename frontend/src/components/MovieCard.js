@@ -1,20 +1,62 @@
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Box, Button } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const MovieCard = ({ movie }) => {
 
     const [info, setInfo] = useState({});
+    const [inLibrary, setInLibrary] = useState(false);
+    const [libraryId, setLibraryId] = useState(-1);
 
     const requestInfo = async () => {
         try {
-            const response = await axios.get(`http://www.omdbapi.com/?apikey=a58446f4&i=${movie.imdbID}`);
+            const response = await axios.get(`http://127.0.0.1:3001/movies/info/${movie.imdbID}`);
             setInfo(response.data);
-            console.log(info);
+            checkLibrary(movie.imdbID);
         } catch (error) {
             console.error(error);
         }
+    }
+
+    const addToLibrary = async () => {
+        try {
+            const user = await (axios.get('http://127.0.0.1:3001/auth/status')).data;
+            await axios.post('http://127.0.0.1:3001/library-entries', {
+                userId: user.id,
+                imdbId: movie.imdbID
+            })
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const removeFromLibrary = async () => {
+        try {
+            console.log(libraryId);
+            return await (axios.delete('http://127.0.0.1:3001/library-entries/', {
+                data: {
+                    id: libraryId
+                }
+            }))
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const checkLibrary = async(imdbId) => {
+        const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
+        const library = await axios.get(`http://127.0.0.1:3001/library-entries/${user.id}`)
+
+        let found = library.data.find(m => m.imdbId === imdbId);
+
+        if (found !== undefined) {
+            setLibraryId(found.id);
+        }
+
+        setInLibrary(found !== undefined);
     }
 
     useEffect(() => {
@@ -22,14 +64,41 @@ const MovieCard = ({ movie }) => {
     }, [])
 
     return (
-        <Card key={movie.imdbID} sx={{ maxWidth: 300, height: '62vh' }}>
-            <CardMedia image={movie.Poster} title={movie.Title} sx={{width: 'auto', height: '45vh', margin: '1vh'}}></CardMedia>
-            {/*<img src={movie.Poster} alt={movie.Title} style={{ width: 'auto', height: '45vh', marginTop: '1vh'}}> */}
+        <Card key={movie.imdbID} sx={{ aspectRatio: '12/23' }}>
+            <CardMedia image={movie.Poster} title={movie.Title} sx={{width: 'auto', height: '60vh', margin: '1vh'}}></CardMedia>
             <CardContent>
-                <Typography variant="h6" component="div">{movie.Title}</Typography>
-                <Typography variant="body2" color="text.secondary">{movie.Year}</Typography>
-                <StarIcon></StarIcon>
-                <Typography variant="h7" color="text.secondary">{info.imdbRating}</Typography>
+                <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                    <Typography 
+                    variant="h7" 
+                    fontSize={15} 
+                    component="div" 
+                    textAlign={"left"} 
+                    textOverflow={"ellipsis"} 
+                    sx={{
+                        overflow: "hidden", 
+                        textOverflow: "ellipsis", 
+                        display: "-webkit-box", 
+                        WebkitLineClamp: "2", 
+                        WebkitBoxOrient: "vertical"
+                        }}
+                    >
+                        {movie.Title}
+                    </Typography>
+                    <StarIcon></StarIcon>
+                    <Typography variant="h7" color="text.secondary">{info.imdbRating}</Typography>
+                </Box>
+                {!inLibrary && 
+                    <Button variant="text" color="success" onClick={addToLibrary} sx={{bgcolor: 'lightgreen', fontSize: 12, width: '100%', marginTop: '3vh'}}>
+                        <LibraryAddIcon></LibraryAddIcon>
+                        Add to Library
+                    </Button>
+                }
+                {inLibrary &&
+                    <Button variant="text" onClick={removeFromLibrary} sx={{bgcolor: 'lightsalmon', color: 'red', fontSize: 12, width: '100%', marginTop: '3vh'}}>
+                        <LibraryAddIcon></LibraryAddIcon>
+                        Remove from Library
+                    </Button>
+                }
             </CardContent>
         </Card>
     );

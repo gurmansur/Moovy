@@ -24,8 +24,10 @@ export class LibraryEntryController {
         return this.libraryEntryService.fetchEntriesByUserId(id);
     }
 
-    @Delete(':id')
-    deleteEntry(@Param('id', ParseIntPipe) id: number) {
-        return this.libraryEntryService.deleteEntry(id);
+    @Delete()
+    deleteEntry(@Body() body: CreateLibraryEntryType) {
+        console.log(body);
+        
+        return this.libraryEntryService.deleteEntry(body.id);
     }
 }
