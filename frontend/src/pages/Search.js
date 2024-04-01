@@ -20,7 +20,7 @@ const Search = () => {
 
     return (
         <div>
-            <Typography variant="h5" color="initial" sx={{mt: '4vh'}}>Search</Typography>
+            <Typography variant="h5" color="initial">Search</Typography>
             <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             <button onClick={handleSearch}>Search</button>
 
