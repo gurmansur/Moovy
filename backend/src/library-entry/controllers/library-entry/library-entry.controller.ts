@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { LibraryEntryService } from 'src/library-entry/services/library-entry/library-entry.service';
 import { CreateLibraryEntryType } from 'src/utils/types';
 
@@ -12,18 +12,20 @@ export class LibraryEntryController {
         return this.libraryEntryService.fetchEntries();
     }
 
-    @Post(':id')
-    createEntry(
-        @Param('id', ParseIntPipe) id: number, 
-        @Body() createLibraryEntryInfo: CreateLibraryEntryType
-    ){
-        return this.libraryEntryService.createEntry(id, createLibraryEntryInfo);
+    @Post()
+    createEntry(@Body() createLibraryEntryInfo: CreateLibraryEntryType){
+        return this.libraryEntryService.createEntry(createLibraryEntryInfo);
     }
 
     @Get(':id')
     async getEntriesByUser(
-        @Param('id', ParseIntPipe) id: number,
+        @Param('id', ParseIntPipe) id: number
     ){
         return this.libraryEntryService.fetchEntriesByUserId(id);
+    }
+
+    @Delete(':id')
+    deleteEntry(@Param('id', ParseIntPipe) id: number) {
+        return this.libraryEntryService.deleteEntry(id);
     }
 }

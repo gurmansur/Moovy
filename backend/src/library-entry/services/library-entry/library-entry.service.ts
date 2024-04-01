@@ -16,8 +16,8 @@ export class LibraryEntryService {
         
     }
 
-    async createEntry(id: number, createLibraryEntryInfo: CreateLibraryEntryType) {
-        const user = await this.userRepository.findOneBy({id});
+    async createEntry({userId, ...createLibraryEntryInfo}: CreateLibraryEntryType) {
+        const user = await this.userRepository.findOneBy({id: userId});
         if (!user) throw new HttpException('User not found.', HttpStatus.BAD_REQUEST);
 
         const newEntry = this.libraryEntryRepository.create({
@@ -25,7 +25,14 @@ export class LibraryEntryService {
             user
         })
 
-        return this.libraryEntryRepository.save(newEntry);
+        const exists = await this.libraryEntryRepository.exists({where: {user: user, imdbId: createLibraryEntryInfo.imdbId}});
+        
+
+        if ( !exists ) {
+            return this.libraryEntryRepository.save(newEntry);
+        } else {
+            throw new HttpException('Movie already in library', HttpStatus.BAD_REQUEST);
+        }
     }
 
     async fetchEntriesByUserId(id: number) {
@@ -35,6 +42,10 @@ export class LibraryEntryService {
 
     async fetchEntries(){
         return this.libraryEntryRepository.find();
+    }
+
+    async deleteEntry(id: number) {
+        return this.libraryEntryRepository.delete({id});
     }
 
 }

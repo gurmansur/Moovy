@@ -4,5 +4,6 @@ export type CreateUserType = {
 }
 
 export type CreateLibraryEntryType = {
+    userId: number,
     imdbId: string
 }
