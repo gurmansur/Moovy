@@ -22,25 +22,27 @@ const MovieCard = ({ movie }) => {
 
     const addToLibrary = async () => {
         try {
-            const user = await (axios.get('http://127.0.0.1:3001/auth/status')).data;
-            await axios.post('http://127.0.0.1:3001/library-entries', {
+            const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
+            axios.post('http://127.0.0.1:3001/library-entries', {
                 userId: user.id,
                 imdbId: movie.imdbID
             })
 
+            setInLibrary(true);
         } catch (error) {
             console.error(error);
         }
     }
 
-    const removeFromLibrary = async () => {
+    const removeFromLibrary = () => {
         try {
-            console.log(libraryId);
-            return await (axios.delete('http://127.0.0.1:3001/library-entries/', {
+            axios.delete('http://127.0.0.1:3001/library-entries/', {
                 data: {
                     id: libraryId
                 }
-            }))
+            })
+
+            setInLibrary(false);
         } catch (error) {
             console.error(error);
         }
@@ -52,15 +54,16 @@ const MovieCard = ({ movie }) => {
 
         let found = library.data.find(m => m.imdbId === imdbId);
 
+        setInLibrary(found !== undefined);
+
         if (found !== undefined) {
             setLibraryId(found.id);
         }
-
-        setInLibrary(found !== undefined);
     }
 
     useEffect(() => {
         requestInfo();
+        checkLibrary();
     }, [])
 
     return (
@@ -87,13 +90,12 @@ const MovieCard = ({ movie }) => {
                     <StarIcon></StarIcon>
                     <Typography variant="h7" color="text.secondary">{info.imdbRating}</Typography>
                 </Box>
-                {!inLibrary && 
+                {!inLibrary ? 
                     <Button variant="text" color="success" onClick={addToLibrary} sx={{bgcolor: 'lightgreen', fontSize: 12, width: '100%', marginTop: '3vh'}}>
                         <LibraryAddIcon></LibraryAddIcon>
                         Add to Library
                     </Button>
-                }
-                {inLibrary &&
+                :
                     <Button variant="text" onClick={removeFromLibrary} sx={{bgcolor: 'lightsalmon', color: 'red', fontSize: 12, width: '100%', marginTop: '3vh'}}>
                         <LibraryAddIcon></LibraryAddIcon>
                         Remove from Library

@@ -25,9 +25,7 @@ export class LibraryEntryController {
     }
 
     @Delete()
-    deleteEntry(@Body() body: CreateLibraryEntryType) {
-        console.log(body);
-        
+    deleteEntry(@Body() body: CreateLibraryEntryType) {      
         return this.libraryEntryService.deleteEntry(body.id);
     }
 }

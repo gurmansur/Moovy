@@ -12,7 +12,6 @@ const Search = () => {
     const handleSearch = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:3001/movies/${searchTerm.toLowerCase()}`);
-            console.log(response);
             setInvalidSearch(response.data.Response !== "True");
             setMovies(response.data.Search);
         } catch (error) {
