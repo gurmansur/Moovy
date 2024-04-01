@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './typeorm/entities/User';
 import { LibraryEntry } from './typeorm/entities/LibraryEntry';
 import { LibraryEntryModule } from './library-entry/library-entry.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [UsersModule, LibraryEntryModule, TypeOrmModule.forRoot({
@@ -15,7 +16,7 @@ import { LibraryEntryModule } from './library-entry/library-entry.module';
     database: 'moovy',
     entities: [User, LibraryEntry],
     synchronize: true
-  })],
+  }), AuthModule],
   controllers: [],
   providers: [],
 })

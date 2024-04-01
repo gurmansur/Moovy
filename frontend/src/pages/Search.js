@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import MovieCard from '../components/MovieCard';
 
 const Search = () => {
@@ -19,13 +19,13 @@ const Search = () => {
     };
 
     return (
-        <>
+        <div>
+            <Typography variant="h5" color="initial" sx={{mt: '4vh'}}>Search</Typography>
+            <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <button onClick={handleSearch}>Search</button>
+
             {invalidSearch && <p>Invalido</p>}
             {!invalidSearch && 
-            <div>
-                <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                <button onClick={handleSearch}>Search</button>
-
                 <Grid container spacing={2} justifyContent="center" direction="row" sx={{pl: "25vw", pr: "25vw"}}>
                     {movies.map(movie => (
                         <Grid item xs={4} key={movie.imdbID}>
@@ -33,9 +33,8 @@ const Search = () => {
                         </Grid>
                     ))}
                 </Grid>
-            </div>
             }
-        </>
+        </div>
     );
 };
 
