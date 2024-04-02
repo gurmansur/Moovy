@@ -50,9 +50,9 @@ const Search = () => {
 
             {invalidSearch && <Typography>Invalido</Typography>}
             {!invalidSearch &&
-                <Grid container spacing={2} justifyContent="center" direction="row" sx={{ pl: "15vw", pr: "15vw", pt: "5vh" }}>
+                <Grid container spacing={2} justifyContent="center" direction="row" sx={{ pl: 15, pr: 15, pt: 5 }}>
                     {movies.map(movie => (
-                        <Grid item xs={4} key={movie.imdbID}>
+                        <Grid item key={movie.imdbID}>
                             <MovieCard movie={movie} />
                         </Grid>
                     ))}

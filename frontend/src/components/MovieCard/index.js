@@ -68,10 +68,10 @@ const MovieCard = ({ movie }) => {
     }, [movie])
 
     return (
-        <Card key={movie.imdbID} sx={{ aspectRatio: '12/23' }}>
-            <CardMedia image={movie.Poster} title={movie.Title} sx={{width: 'auto', height: '60%', margin: '1vh'}}></CardMedia>
+        <Card key={movie.imdbID} sx={{ aspectRatio: '12/23', height: 480 }}>
+            <CardMedia image={movie.Poster} title={movie.Title} sx={{position: "relative", width: 'auto', height: 340, margin: 1}}></CardMedia>
             <CardContent>
-                <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                <Box sx={{display: 'flex', flexDirection: 'row', height: 40}} alignItems={"center"}>
                     <Typography 
                     variant="h7" 
                     fontSize={15} 
@@ -88,8 +88,10 @@ const MovieCard = ({ movie }) => {
                     >
                         {movie.Title}
                     </Typography>
-                    <StarIcon></StarIcon>
-                    <Typography variant="h7" color="text.secondary">{info.imdbRating}</Typography>
+                    <Box display={"flex"} sx={{ml: "auto"}}>
+                        <StarIcon></StarIcon>
+                        <Typography variant="h7" color="text.secondary">{info.imdbRating}</Typography>
+                    </Box>
                 </Box>
                 {!inLibrary ? 
                     <Button variant="text" color="success" onClick={addToLibrary} sx={{bgcolor: 'lightgreen', fontSize: 12, width: '100%', marginTop: '3vh'}}>
