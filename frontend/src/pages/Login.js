@@ -3,6 +3,7 @@ import { Container, Typography, Box, FormControl, InputLabel, Input, InputAdornm
 import AccountBox from '@mui/icons-material/AccountBox';
 import LockIcon from '@mui/icons-material/Lock';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
@@ -18,10 +19,13 @@ const Login = () => {
         console.log(response.data);
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
+
+        return navigate('/my-library');
     }
 
 const [username, setUsername] = React.useState('');
 const [password, setPassword] = React.useState('');
+const navigate = useNavigate();
 
 const handleUsernameChange = (event) => {
     setUsername(event.target.value);
