@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Grid, Typography, TextField, InputAdornment, IconButton } from '@mui/material';
 import MovieCard from '../components/MovieCard';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [movies, setMovies] = useState([]);
     const [invalidSearch, setInvalidSearch] = useState(false);
+    const navigate = useNavigate();
+    const [user, setUser] = useState({});
 
     const handleSearch = async () => {
         try {
@@ -19,11 +22,26 @@ const Search = () => {
         }
     };
 
+    const checkAuthorized = async () => {
+        try {
+            setUser((await axios.get('http://127.0.0.1:3001/auth/status')).data);
+        } catch (e) {
+            console.log(e);
+            if (e.response.status === 401) {
+                return navigate('/login')
+            }
+        }
+    }
+
     const pressEnter = (e) => {
         if (e.keyCode === 13) {
           handleSearch();
         }
     };
+
+    useEffect(() => {
+        checkAuthorized();
+    })
 
     return (
         <div>

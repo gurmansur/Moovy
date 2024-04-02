@@ -2,21 +2,30 @@ import { Typography, Grid } from '@mui/material'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';
+import { useNavigate } from 'react-router-dom';
 
 const MyLibrary = () => {
 
     const [movies, setMovies] = useState([])
+    const navigate = useNavigate();
 
     const getLibrary = async() => {
-        const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
-        const library = (await axios.get(`http://127.0.0.1:3001/library-entries/${user.id}`)).data;
+        try {
+            const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
+            const library = (await axios.get(`http://127.0.0.1:3001/library-entries/${user.id}`)).data;
 
-        const libraryInfo = await Promise.all(library.map(async (entry) => {
-            const movieData = (await axios.get(`http://127.0.0.1:3001/movies/info/${entry.imdbId}`)).data
-            return movieData;
-        }))
+            const libraryInfo = await Promise.all(library.map(async (entry) => {
+                const movieData = (await axios.get(`http://127.0.0.1:3001/movies/info/${entry.imdbId}`)).data
+                return movieData;
+            }))
 
-        setMovies(libraryInfo);
+            setMovies(libraryInfo);
+        } catch (e) {
+            console.log(e);
+            if (e.response.status === 401) {
+                return navigate('/login')
+            }
+        }
     }
 
     useEffect(() => {

@@ -4,6 +4,7 @@ import AccountBox from '@mui/icons-material/AccountBox';
 import LockIcon from '@mui/icons-material/Lock';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Login = () => {
 
@@ -16,12 +17,14 @@ const Login = () => {
 
             console.log(response.data);
 
+            Cookies.set('token', response.data, { expires: 7, secure: true });
+
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
 
             return navigate('/my-library');
         } catch (e) {
             
-            
+
 
         }
     }

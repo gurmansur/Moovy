@@ -4,6 +4,7 @@ import AccountBox from '@mui/icons-material/AccountBox';
 import LockIcon from '@mui/icons-material/Lock';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Register = () => {
 
@@ -29,12 +30,12 @@ const Register = () => {
                 return error;
             });
 
-            console.log(response.data);
-
             const loginResponse = await axios.post('http://localhost:3001/auth/login', {
                 username: username,
                 password: password
             })
+
+            Cookies.set('token', loginResponse.data, { expires: 7, secure: true });
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.data}`;
 

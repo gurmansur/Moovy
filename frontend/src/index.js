@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
+const token = Cookies.get('token');
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
