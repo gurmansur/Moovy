@@ -28,6 +28,7 @@ const MovieCard = ({ movie }) => {
                 imdbId: movie.imdbID
             })
 
+            requestInfo();
             setInLibrary(true);
         } catch (error) {
             console.error(error);
@@ -42,6 +43,7 @@ const MovieCard = ({ movie }) => {
                 }
             })
 
+            requestInfo();
             setInLibrary(false);
         } catch (error) {
             console.error(error);
@@ -63,8 +65,7 @@ const MovieCard = ({ movie }) => {
 
     useEffect(() => {
         requestInfo();
-        checkLibrary();
-    }, [])
+    }, [movie])
 
     return (
         <Card key={movie.imdbID} sx={{ aspectRatio: '12/23' }}>

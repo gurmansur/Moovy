@@ -6,9 +6,8 @@ import axios from 'axios';
 import './App.css';
 import Container from '@mui/material/Container'
 
-const token1 = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJHYWxhY3RpY1NhbSIsImlhdCI6MTcxMTk5OTU4MywiZXhwIjoxNzEyMTcyMzgzfQ.UKbdzjqlcUD6TTL1J8jgAgibEI2PbNxx_He8kVVLXT8`;
-const token2 = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJTYW0iLCJpYXQiOjE3MTIwMDAyMzQsImV4cCI6MTcxMjE3MzAzNH0.c_SP4Gy7Zq3fXDCEq9YMQIZqtQuzmERrtgu92-GvzhY`;
-axios.defaults.headers.common['Authorization'] = `Bearer ${token1}` 
+const token3 = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJHYWxhY3RpY1NhbSIsImlhdCI6MTcxMjAxNjIzMiwiZXhwIjoxNzEyMTg5MDMyfQ.n6zbxB7maXT4SNU1UD5pQc94AfNpaXDcQNYvz2sqU44`;
+axios.defaults.headers.common['Authorization'] = `Bearer ${token3}` 
 
 
 const App = () => {
