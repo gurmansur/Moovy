@@ -94,12 +94,12 @@ const MovieCard = ({ movie }) => {
                     </Box>
                 </Box>
                 {!inLibrary ? 
-                    <Button variant="text" color="success" onClick={addToLibrary} sx={{bgcolor: 'lightgreen', fontSize: 12, width: '100%', marginTop: '3vh'}}>
+                    <Button variant="text" color="success" onClick={addToLibrary} sx={{bgcolor: 'lightgreen', fontSize: 12, width: '100%', mt: 2}}>
                         <LibraryAddIcon></LibraryAddIcon>
                         Add to Library
                     </Button>
                 :
-                    <Button variant="text" onClick={removeFromLibrary} sx={{bgcolor: 'lightsalmon', color: 'red', fontSize: 12, width: '100%', marginTop: '3vh'}}>
+                    <Button variant="text" onClick={removeFromLibrary} sx={{bgcolor: 'lightsalmon', color: 'red', fontSize: 12, width: '100%', marginTop: 2}}>
                         <LibraryAddIcon></LibraryAddIcon>
                         Remove from Library
                     </Button>
