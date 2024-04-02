@@ -20,27 +20,26 @@ const Register = () => {
     };
 
     const register = async() => {
-        const response = await axios.post('http://localhost:3001/users', {
-            username: username,
-            password: password
-        }).catch(error => {
-            console.log(error);
-            return error;
-        });
+        try {
+            const response = await axios.post('http://localhost:3001/users', {
+                username: username,
+                password: password
+            }).catch(error => {
+                console.log(error);
+                return error;
+            });
 
-        console.log(response.data);
+            console.log(response.data);
 
-        const loginResponse = await axios.post('http://localhost:3001/auth/login', {
-            username: username,
-            password: password
-        }).catch(error => {
-            console.log(error);
-            return error;
-        });
+            const loginResponse = await axios.post('http://localhost:3001/auth/login', {
+                username: username,
+                password: password
+            })
 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.data}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.data}`;
 
-        return navigate('/my-library');
+            return navigate('/my-library');
+        } catch (e) {}
     }
 
     return (

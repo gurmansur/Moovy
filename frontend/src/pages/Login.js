@@ -8,19 +8,22 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
 
     const login = async(username, password) => {
-        const response = await axios.post('http://localhost:3001/auth/login', {
-            username: username,
-            password: password
-        }).catch(error => {
-            console.log(error);
-            return error;
-        });
+        try{
+            const response = await axios.post('http://localhost:3001/auth/login', {
+                username: username,
+                password: password
+            })
 
-        console.log(response.data);
+            console.log(response.data);
 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
 
-        return navigate('/my-library');
+            return navigate('/my-library');
+        } catch (e) {
+            
+            
+
+        }
     }
 
 const [username, setUsername] = React.useState('');
