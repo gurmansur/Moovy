@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
+import { Link } from 'react-router-dom';
 
 const pages = ['Search', 'My Library'];
 const settings = ['Profile', 'Logout'];
@@ -38,22 +39,22 @@ const ResponsiveAppBar = () => {
     <AppBar sx={{bgcolor: '#dce0e2', color: 'black'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 700,
-              color: 'orange',
-              textDecoration: 'none',
-            }}
-          >
-            Moovy
-          </Typography>
-
+          <Link to="/" style={{textDecoration: 'none', color: 'black'}}>
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontWeight: 700,
+                color: 'orange',
+                textDecoration: 'none',
+              }}
+            >
+              Moovy
+            </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -110,15 +111,11 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                color="inherit"
-                sx={{ ml: 7, fontWeight: 300 }}
-                component="a" // Add this line to make the button act as a link
-                href={`/${page.toLowerCase().replace(' ', '-')}`} // Replace spaces with dashes and make the link lowercase
-              >
-                {page}
-              </Button>
+              <Link to={`/${page.toLowerCase().replace(' ', '-')}`} style={{textDecoration: 'none', color: 'black'}}>
+                <Typography variant="h6" sx={{ ml: 7, fontWeight: 700, fontSize: 18, color: 'black' }}>
+                  {page}
+                </Typography>
+              </Link>
             ))}
           </Box>
           {/*User avatar*/}

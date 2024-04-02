@@ -69,7 +69,7 @@ const MovieCard = ({ movie }) => {
 
     return (
         <Card key={movie.imdbID} sx={{ aspectRatio: '12/23' }}>
-            <CardMedia image={movie.Poster} title={movie.Title} sx={{width: 'auto', height: '60vh', margin: '1vh'}}></CardMedia>
+            <CardMedia image={movie.Poster} title={movie.Title} sx={{width: 'auto', height: '60%', margin: '1vh'}}></CardMedia>
             <CardContent>
                 <Box sx={{display: 'flex', flexDirection: 'row'}}>
                     <Typography 
