@@ -1,7 +1,7 @@
 import { Typography, Grid } from '@mui/material'
-import MovieCard from '../components/MovieCard';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import MovieCard from '../components/MovieCard';
 
 const MyLibrary = () => {
 

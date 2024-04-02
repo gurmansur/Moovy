@@ -1,10 +1,10 @@
-import ResponsiveAppBar from './components/ResponsiveAppBar';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Search from './pages/Search';
 import MyLibrary from './pages/MyLibrary';
 import axios from 'axios';
 import './App.css';
-import Container from '@mui/material/Container'
+import Container from '@mui/material/Container';
+import ResponsiveAppBar from './components/ResponsiveAppBar';
 
 const token3 = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJHYWxhY3RpY1NhbSIsImlhdCI6MTcxMjAxNjIzMiwiZXhwIjoxNzEyMTg5MDMyfQ.n6zbxB7maXT4SNU1UD5pQc94AfNpaXDcQNYvz2sqU44`;
 axios.defaults.headers.common['Authorization'] = `Bearer ${token3}` 

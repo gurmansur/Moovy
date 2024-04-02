@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Grid, Typography, TextField, InputAdornment, Button, IconButton } from '@mui/material';
+import { Grid, Typography, TextField, InputAdornment, IconButton } from '@mui/material';
 import MovieCard from '../components/MovieCard';
 import SearchIcon from '@mui/icons-material/Search';
 
