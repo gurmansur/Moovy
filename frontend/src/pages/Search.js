@@ -60,7 +60,7 @@ const Search = () => {
                             </IconButton>
                         </InputAdornment>
                     ),
-                    sx: {borderRadius: '50px', bgcolor: 'white', height: '8vh', width: '30vw'}
+                    sx: {borderRadius: '50px', bgcolor: 'white', height: 40, width: '30vw'}
                 }}
             > 
             </TextField>
