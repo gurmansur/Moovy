@@ -4,12 +4,11 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const MovieCard = ({ movie, getLibrary }) => {
-
+const MovieCard = ({ movie, getLibrary, handleAlert, loading, setLoading, isInLibraryPage }) => {
     const [info, setInfo] = useState({});
     const [inLibrary, setInLibrary] = useState(false);
     const [libraryId, setLibraryId] = useState(-1);
-    const [loading, setLoading] = useState(false);
+    
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => setOpen(true);
@@ -41,10 +40,13 @@ const MovieCard = ({ movie, getLibrary }) => {
 
             await checkLibrary(movie.imdbID)
 
+
+            handleAlert(movie.Title, 'added');
             setInLibrary(true);
             setLoading(false);
         } catch (error) {
             setInLibrary(false);
+            setLoading(false);
             console.error(error);
         }
     }
@@ -61,15 +63,13 @@ const MovieCard = ({ movie, getLibrary }) => {
             
             handleClose();
             
-            if (getLibrary !== undefined) {
-                await getLibrary();
-            }
-
-            await checkLibrary(movie.imdbID);
             setInLibrary(false);
+            await checkLibrary(movie.imdbID);
+            handleAlert(movie.Title, 'removed');
             setLoading(false);
         } catch (error) {
             setInLibrary(true);
+            setLoading(false);
             console.error(error);
         }
     }
@@ -79,7 +79,7 @@ const MovieCard = ({ movie, getLibrary }) => {
             const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
             const library = await axios.get(`http://127.0.0.1:3001/library-entries/${user.id}`)
 
-            let found = library.data.find(m => m.imdbId === imdbId);
+            let found = await library.data.find(m => m.imdbId === imdbId);
 
             if (found !== undefined) {
                 setLibraryId(found.id);
@@ -99,10 +99,11 @@ const MovieCard = ({ movie, getLibrary }) => {
 
     return (
         <Card key={movie.imdbID} sx={{ aspectRatio: '12/23', height: 480 }}>
-            <CardMedia image={movie.Poster} title={movie.Title} sx={{position: "relative", width: 'auto', height: 340, margin: 1}}></CardMedia>
+            {!(loading && isInLibraryPage) ? <CardMedia image={movie.Poster} title={movie.Title} sx={{position: "relative", width: 'auto', height: 340, margin: 1}}></CardMedia> : 
+            <Skeleton variant="rectangular" width={235} height={340} sx={{ position: "relative", margin: 1 }}/>}
             <CardContent>
                 <Box sx={{display: 'flex', flexDirection: 'row', height: 40}} alignItems={"center"}>
-                    <Typography 
+                    {!(loading && isInLibraryPage) ? <Typography 
                     variant="h7" 
                     fontSize={15} 
                     component="div" 
@@ -117,11 +118,11 @@ const MovieCard = ({ movie, getLibrary }) => {
                         }}
                     >
                         {movie.Title}
-                    </Typography>
-                    <Box display={"flex"} sx={{ml: "auto"}}>
+                    </Typography> : <Skeleton variant="text" width={210} height={10} sx={{borderRadius: 1}}/>}
+                    {!(loading && isInLibraryPage) ?<Box display={"flex"} sx={{ml: "auto"}}>
                         <StarIcon></StarIcon>
                         <Typography variant="h7" color="text.secondary">{info.imdbRating}</Typography>
-                    </Box>
+                    </Box> : <Skeleton variant="text" width={210} height={10} sx={{borderRadius: 1}}/>}
                 </Box>
                 {(!loading && !inLibrary) &&
                     <Button variant="text" color="success" onClick={addToLibrary} sx={{bgcolor: 'lightgreen', fontSize: 12, width: '100%', mt: 2}}>

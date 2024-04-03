@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Grid, Typography, TextField, InputAdornment, IconButton } from '@mui/material';
+import { Grid, Typography, TextField, InputAdornment, IconButton, Box, Collapse, Alert } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import MovieCard from '../components/MovieCard';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +12,14 @@ const Search = ({setSelectedTab}) => {
     const [invalidSearch, setInvalidSearch] = useState(false);
     const navigate = useNavigate();
     const [user, setUser] = useState({});
+    const [alert, setAlert] = useState(false);
+    const [alertInfo, setAlertInfo] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const handleAlert = (name, operation) => {
+        setAlertInfo({name: name, operation: operation});
+        setAlert(true);
+    }
 
     const handleSearch = async () => {
         try {
@@ -44,7 +53,12 @@ const Search = ({setSelectedTab}) => {
     }, [])
 
     return (
-        <div>
+        <Box>
+            <Collapse in={alert}>
+                <Alert severity={alertInfo.operation === 'added' ? "success" : "error"} sx={{ mb: 2 }} onClose={() => setAlert(false)}>
+                    {alertInfo.name} {alertInfo.operation} {alertInfo.operation === 'added' ? "to" : "from"} your library
+                </Alert>
+            </Collapse>
             <Typography variant="h5" color="initial">Search</Typography>
 
             <TextField
@@ -71,12 +85,12 @@ const Search = ({setSelectedTab}) => {
                 <Grid container spacing={2} justifyContent="center" direction="row" sx={{ pl: 15, pr: 15, pt: 5 }}>
                     {movies.map(movie => (
                         <Grid item key={movie.imdbID}>
-                            <MovieCard movie={movie} />
+                            <MovieCard movie={movie} handleAlert={handleAlert} loading={loading} setLoading={setLoading}/>
                         </Grid>
                     ))}
                 </Grid>
             }
-        </div>
+        </Box>
     );
 };
 
