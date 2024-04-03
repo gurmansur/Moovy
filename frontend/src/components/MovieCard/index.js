@@ -4,6 +4,7 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+
 const MovieCard = ({ movie, getLibrary, handleAlert, loading, setLoading, isInLibraryPage }) => {
     const [info, setInfo] = useState({});
     const [inLibrary, setInLibrary] = useState(false);
@@ -16,7 +17,7 @@ const MovieCard = ({ movie, getLibrary, handleAlert, loading, setLoading, isInLi
 
     const requestInfo = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:3001/movies/info/${movie.imdbID}`);
+            const response = await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}movies/info/${movie.imdbID}`);
             setInfo(response.data);
             checkLibrary(movie.imdbID);
         } catch (error) {
@@ -28,8 +29,8 @@ const MovieCard = ({ movie, getLibrary, handleAlert, loading, setLoading, isInLi
         try {
             setLoading(true);
 
-            const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
-            await axios.post('http://127.0.0.1:3001/library-entries', {
+            const user = (await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}auth/status`)).data;
+            await axios.post(`${process.env.REACT_APP_MOOVY_BACKEND}library-entries`, {
                 userId: user.id,
                 imdbId: movie.imdbID
             })
@@ -55,7 +56,7 @@ const MovieCard = ({ movie, getLibrary, handleAlert, loading, setLoading, isInLi
         try {
             setLoading(true);
             
-            await axios.delete('http://127.0.0.1:3001/library-entries/', {
+            await axios.delete(`${process.env.REACT_APP_MOOVY_BACKEND}library-entries/`, {
                 data: {
                     id: libraryId
                 }
@@ -76,8 +77,8 @@ const MovieCard = ({ movie, getLibrary, handleAlert, loading, setLoading, isInLi
 
     const checkLibrary = async(imdbId) => {
         try {
-            const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
-            const library = await axios.get(`http://127.0.0.1:3001/library-entries/${user.id}`)
+            const user = (await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}auth/status`)).data;
+            const library = await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}library-entries/${user.id}`)
 
             let found = await library.data.find(m => m.imdbId === imdbId);
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Grid, Typography, TextField, InputAdornment, IconButton, Box, Collapse, Alert } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import MovieCard from '../components/MovieCard';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +22,7 @@ const Search = ({setSelectedTab}) => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:3001/movies/${searchTerm.toLowerCase()}`);
+            const response = await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}movies/${searchTerm.toLowerCase()}`);
             setInvalidSearch(response.data.Response !== "True");
             setMovies(response.data.Search);
         } catch (error) {
@@ -33,7 +32,7 @@ const Search = ({setSelectedTab}) => {
 
     const checkAuthorized = async () => {
         try {
-            setUser((await axios.get('http://127.0.0.1:3001/auth/status')).data);
+            setUser((await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}auth/status`)).data);
         } catch (e) {
             if (e.response.status === 401) {
                 setSelectedTab('Login');

@@ -28,7 +28,7 @@ const App = () => {
         return;
       }
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      const response = await axios.get('http://localhost:3001/auth/status');
+      const response = await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}auth/status`);
       setUser(response.data);
     }
     catch (e) {

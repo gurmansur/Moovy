@@ -7,11 +7,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
+
 const Login = ({setUser, setLoggedIn}) => {
 
     const login = async(username, password) => {
         try{
-            const response = await axios.post('http://localhost:3001/auth/login', {
+            const response = await axios.post(`${process.env.REACT_APP_MOOVY_BACKEND}auth/login`, {
                 username: username,
                 password: password
             })
@@ -20,7 +21,7 @@ const Login = ({setUser, setLoggedIn}) => {
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
 
-            const user = await axios.get('http://localhost:3001/auth/status')
+            const user = await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}auth/status`)
 
             setUser(user.data);
 

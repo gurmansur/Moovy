@@ -24,13 +24,13 @@ const Register = ({setUser, setLoggedIn}) => {
 
     const register = async() => {
         try {
-            const response = await axios.post('http://localhost:3001/users', {
+            const response = await axios.post(`${process.env.REACT_APP_MOOVY_BACKEND}users`, {
                 username: username,
                 password: password
             })
 
             if(response.status === 201) {
-                const loginResponse = await axios.post('http://localhost:3001/auth/login', {
+                const loginResponse = await axios.post(`${process.env.REACT_APP_MOOVY_BACKEND}auth/login`, {
                     username: username,
                     password: password
                 })
@@ -39,7 +39,7 @@ const Register = ({setUser, setLoggedIn}) => {
 
                 axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.data}`;
              
-                const user = await axios.get('http://localhost:3001/auth/status')
+                const user = await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}auth/status`)
 
                 setUser(user.data);
 

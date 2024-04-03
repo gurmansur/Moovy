@@ -5,6 +5,7 @@ import axios from 'axios';
 import MovieCard from '../components/MovieCard';
 import { useNavigate } from 'react-router-dom';
 
+
 const MyLibrary = ({setSelectedTab}) => {
 
     const [movies, setMovies] = useState([])
@@ -19,11 +20,11 @@ const MyLibrary = ({setSelectedTab}) => {
 
     const getLibrary = async() => {
         try {
-            const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
-            const library = (await axios.get(`http://127.0.0.1:3001/library-entries/${user.id}`)).data;
+            const user = (await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}auth/status`)).data;
+            const library = (await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}library-entries/${user.id}`)).data;
 
             const libraryInfo = await Promise.all(library.map(async (entry) => {
-                const movieData = (await axios.get(`http://127.0.0.1:3001/movies/info/${entry.imdbId}`)).data
+                const movieData = (await axios.get(`${process.env.REACT_APP_MOOVY_BACKEND}movies/info/${entry.imdbId}`)).data
                 return movieData;
             }))
 
