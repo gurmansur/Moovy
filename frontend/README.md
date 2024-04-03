@@ -26,6 +26,8 @@ Create a .env file in the frontend folder and add this variable to it
 REACT_APP_MOOVY_BACKEND = http://localhost:3001/
 ```
 
+</details>
+
 ## Running the app
 
 ```bash
