@@ -51,15 +51,18 @@ const MovieCard = ({ movie }) => {
     }
 
     const checkLibrary = async(imdbId) => {
-        const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
-        const library = await axios.get(`http://127.0.0.1:3001/library-entries/${user.id}`)
+        try {
+            const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
+            const library = await axios.get(`http://127.0.0.1:3001/library-entries/${user.id}`)
 
-        let found = library.data.find(m => m.imdbId === imdbId);
+            let found = library.data.find(m => m.imdbId === imdbId);
 
-        setInLibrary(found !== undefined);
+            setInLibrary(found !== undefined);
 
-        if (found !== undefined) {
-            setLibraryId(found.id);
+            if (found !== undefined) {
+                setLibraryId(found.id);
+            }
+        } catch (error) {
         }
     }
 

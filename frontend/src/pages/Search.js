@@ -5,7 +5,7 @@ import MovieCard from '../components/MovieCard';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 
-const Search = () => {
+const Search = ({setSelectedTab}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [movies, setMovies] = useState([]);
     const [invalidSearch, setInvalidSearch] = useState(false);
@@ -26,8 +26,8 @@ const Search = () => {
         try {
             setUser((await axios.get('http://127.0.0.1:3001/auth/status')).data);
         } catch (e) {
-            console.log(e);
             if (e.response.status === 401) {
+                setSelectedTab('Login');
                 return navigate('/login')
             }
         }
@@ -66,7 +66,7 @@ const Search = () => {
             </TextField>
             
 
-            {invalidSearch && <Typography>Invalido</Typography>}
+            {invalidSearch && <Typography>Invalid Search</Typography>}
             {!invalidSearch &&
                 <Grid container spacing={2} justifyContent="center" direction="row" sx={{ pl: 15, pr: 15, pt: 5 }}>
                     {movies.map(movie => (

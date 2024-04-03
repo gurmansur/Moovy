@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,14 +11,17 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const pages = ['Search', 'My Library'];
-const settings = ['Profile', 'Logout'];
+const settings = ['Logout'];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = ({ user, setUser, selectedTab, setSelectedTab }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -35,11 +38,24 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
+  const logout = () => {
+    Cookies.remove('token');
+    setUser({});
+    setSelectedTab('');
+    axios.defaults.headers.common['Authorization'] = '';
+    navigate('/');
+    handleCloseUserMenu();
+  };
+
+  const handleTabClick = (page) => {
+    setSelectedTab(page);
+  };
+
   return (
-    <AppBar sx={{bgcolor: '#dce0e2', color: 'black'}}>
+    <AppBar sx={{ bgcolor: '#dce0e2', color: 'black' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link to="/" style={{textDecoration: 'none', color: 'black'}}>
+          <Link to="/" style={{ textDecoration: 'none', color: 'black' }} onClick={() => handleTabClick('')}>
             <Typography
               variant="h5"
               noWrap
@@ -111,20 +127,38 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link to={`/${page.toLowerCase().replace(' ', '-')}`} style={{textDecoration: 'none', color: 'black'}}>
-                <Typography variant="h6" sx={{ ml: 7, fontWeight: 700, fontSize: 18, color: 'black' }}>
+              <Link
+                to={`/${page.toLowerCase().replace(' ', '-')}`}
+                style={{ textDecoration: 'none', color: 'black' }}
+                onClick={() => handleTabClick(page)}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    ml: 7,
+                    fontWeight: 700,
+                    fontSize: 18,
+                    color: selectedTab === page ? 'orange' : 'black',
+                  }}
+                >
                   {page}
                 </Typography>
               </Link>
             ))}
-          </Box>
+            </Box>
           {/*User avatar*/}
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          { Object.keys(user).length !== 0 && 
+          <Tooltip title="Open settings">
+            <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex', cursor: "pointer"}}} alignItems={"center"} onClick={handleOpenUserMenu}>
+            <Typography variant="h6" sx={{ ml: 7, fontWeight: 700, fontSize: 18, color: 'black', mr: 2, cursor: "pointer"  }}>
+              {user.username}
+            </Typography>
+            
+              <IconButton sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
-            </Tooltip>
+              </Box>
+            </Tooltip>}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -141,13 +175,24 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
+              <MenuItem key={"logout"} onClick={logout}>
+                <Typography textAlign="center">Logout</Typography>
               </MenuItem>
-            ))}
             </Menu>
-          </Box>
+          {Object.keys(user).length === 0 && 
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, flexDirection: "row-reverse"}}>
+              <Link to={`/login`} style={{textDecoration: 'none', color: 'black'}} onClick={() => handleTabClick('Login')}>
+                <Typography variant="h6" sx={{ ml: 7, fontWeight: 700, fontSize: 18, color: selectedTab === 'Login' ? 'orange' : 'black' }}>
+                  Login
+                </Typography>
+              </Link>
+              <Link to={`/register`} style={{textDecoration: 'none', color: 'black'}} onClick={() => handleTabClick('Register')}>
+                <Typography variant="h6" sx={{ ml: 7, fontWeight: 700, fontSize: 18, color: selectedTab === 'Register' ? 'orange' : 'black' }}>
+                  Register
+                </Typography>
+              </Link>
+            </Box>
+          }
         </Toolbar>
       </Container>
     </AppBar>

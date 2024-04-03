@@ -2,12 +2,13 @@ import { Typography, Grid } from '@mui/material'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const MyLibrary = () => {
+const MyLibrary = ({setSelectedTab}) => {
 
     const [movies, setMovies] = useState([])
     const navigate = useNavigate();
+    const location = useLocation();
 
     const getLibrary = async() => {
         try {
@@ -21,9 +22,9 @@ const MyLibrary = () => {
 
             setMovies(libraryInfo);
         } catch (e) {
-            console.log(e);
             if (e.response.status === 401) {
-                return navigate('/login')
+                setSelectedTab('Login');
+                return navigate('/login', { state: { from: location}, replace: true});
             }
         }
     }

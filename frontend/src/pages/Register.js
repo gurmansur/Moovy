@@ -1,15 +1,17 @@
 import React from 'react';
-import { Container, Typography, Box, FormControl, InputLabel, Input, InputAdornment, Card, Button } from '@mui/material';
+import { Container, Typography, Box, FormControl, InputLabel, Input, InputAdornment, Card, Button, Alert, Collapse, IconButton } from '@mui/material';
 import AccountBox from '@mui/icons-material/AccountBox';
 import LockIcon from '@mui/icons-material/Lock';
 import axios from 'axios';
+import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-const Register = () => {
+const Register = ({setUser, setLoggedIn}) => {
 
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [alert, setAlert] = React.useState(false);
     const navigate = useNavigate();
     
     const handleUsernameChange = (event) => {
@@ -25,26 +27,51 @@ const Register = () => {
             const response = await axios.post('http://localhost:3001/users', {
                 username: username,
                 password: password
-            }).catch(error => {
-                console.log(error);
-                return error;
-            });
-
-            const loginResponse = await axios.post('http://localhost:3001/auth/login', {
-                username: username,
-                password: password
             })
 
-            Cookies.set('token', loginResponse.data, { expires: 7, secure: true });
+            if(response.status === 201) {
+                const loginResponse = await axios.post('http://localhost:3001/auth/login', {
+                    username: username,
+                    password: password
+                })
 
-            axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.data}`;
+                Cookies.set('token', loginResponse.data, { expires: 7, secure: true });
 
-            return navigate('/my-library');
-        } catch (e) {}
+                axios.defaults.headers.common['Authorization'] = `Bearer ${loginResponse.data}`;
+             
+                const user = await axios.get('http://localhost:3001/auth/status')
+
+                setUser(user.data);
+
+                return navigate('/my-library');
+            }
+        } catch (e) {
+            setAlert(true);
+        }
     }
 
     return (
         <Container maxWidth="xs">
+            <Collapse in={alert}>
+                <Alert
+                action={
+                    <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                        setAlert(false);
+                    }}
+                    >
+                    <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                }
+                severity="error"
+                sx={{ mb: 2 }}
+                >
+                Invalid username or password
+                </Alert>
+            </Collapse>
         <Card sx={{p: '10%'}}>
             <Typography variant="h5" color="initial" sx={{pb: '3vh'}}>Register</Typography>
             <Box component="form" noValidate autoComplete="off" display={'flex'} flexDirection={'column'}>
