@@ -1,4 +1,4 @@
-import { Typography, Grid } from '@mui/material'
+import { Typography, Grid, Modal, Box, Button, Card } from '@mui/material'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';

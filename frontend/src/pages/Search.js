@@ -45,7 +45,7 @@ const Search = ({setSelectedTab}) => {
 
     return (
         <div>
-            <Typography variant="h5" color="initial" transformOrigin={{ vertical: 'top', horizontal: 'left' }}>Search</Typography>
+            <Typography variant="h5" color="initial">Search</Typography>
 
             <TextField
                 id="searchTerm"

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Typography, Box, Button } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Box, Button, Modal, Skeleton } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { useEffect, useState } from "react";
@@ -9,6 +9,11 @@ const MovieCard = ({ movie, getLibrary }) => {
     const [info, setInfo] = useState({});
     const [inLibrary, setInLibrary] = useState(false);
     const [libraryId, setLibraryId] = useState(-1);
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const requestInfo = async () => {
         try {
@@ -22,38 +27,48 @@ const MovieCard = ({ movie, getLibrary }) => {
 
     const addToLibrary = async () => {
         try {
+            setLoading(true);
+
             const user = (await axios.get('http://127.0.0.1:3001/auth/status')).data;
-            axios.post('http://127.0.0.1:3001/library-entries', {
+            await axios.post('http://127.0.0.1:3001/library-entries', {
                 userId: user.id,
                 imdbId: movie.imdbID
             })
 
             if (getLibrary !== undefined) {
-                getLibrary();
+               await getLibrary();
             }
 
-            requestInfo();
             setInLibrary(true);
+
+            setLoading(false);
         } catch (error) {
+            setInLibrary(false);
             console.error(error);
         }
     }
 
-    const removeFromLibrary = () => {
+    const removeFromLibrary = async () => {
         try {
-            axios.delete('http://127.0.0.1:3001/library-entries/', {
+            setLoading(true);
+            console.log(loading);
+            
+            await axios.delete('http://127.0.0.1:3001/library-entries/', {
                 data: {
                     id: libraryId
                 }
             })
-
+            
+            handleClose();
+            
             if (getLibrary !== undefined) {
-                getLibrary();
+                await getLibrary();
             }
 
-            requestInfo();
+            setLoading(false);
             setInLibrary(false);
         } catch (error) {
+            setInLibrary(true);
             console.error(error);
         }
     }
@@ -105,17 +120,47 @@ const MovieCard = ({ movie, getLibrary }) => {
                         <Typography variant="h7" color="text.secondary">{info.imdbRating}</Typography>
                     </Box>
                 </Box>
-                {!inLibrary ? 
+                {(!loading && !inLibrary) &&
                     <Button variant="text" color="success" onClick={addToLibrary} sx={{bgcolor: 'lightgreen', fontSize: 12, width: '100%', mt: 2}}>
                         <LibraryAddIcon></LibraryAddIcon>
                         Add to Library
                     </Button>
-                :
-                    <Button variant="text" onClick={removeFromLibrary} sx={{bgcolor: 'lightsalmon', color: 'red', fontSize: 12, width: '100%', marginTop: 2}}>
+                }
+                {(!loading && inLibrary) && <>
+                    <Button variant="text" onClick={handleOpen} sx={{bgcolor: 'lightsalmon', color: 'red', fontSize: 12, width: '100%', marginTop: 2}}>
                         <LibraryAddIcon></LibraryAddIcon>
                         Remove from Library
                     </Button>
+                    <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    >
+                    <Card sx={{
+                        position: 'absolute',
+                        width: 400,
+                        left: '50%',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        padding: 4
+                    }}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Remove from your library
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Are you sure you want to remove "{movie.Title}" from your library?
+                        </Typography>
+
+                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+                            <Button variant="contained" color="error" sx={{width: "45%"}} onClick={removeFromLibrary}>Remove</Button>
+                            <Button variant="contained" sx={{bgcolor: "gray", width: "45%"}} onClick={handleClose}>Cancel</Button>
+                        </Box>
+                    </Card>
+                    </Modal>
+                </>
                 }
+                {loading && <Skeleton variant="rounded" width={210} height={38} sx={{marginTop: 2, borderRadius: 1}}/>}
             </CardContent>
         </Card>
     );
