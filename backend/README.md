@@ -28,6 +28,24 @@ Create a .env file in the backend folder and add these variables to it
 
 `DB_PASSWORD`= `<your password>`
 
+`OMDB_APIKEY`= `<your omdb api key>`
+
+<details>
+<summary>Example of .env</summary>
+
+
+```
+PORT = 3001
+DB_PORT = 5432
+DB_HOST = localhost
+DB_NAME = moovy
+DB_USER = postgres
+DB_PASSWORD = admin
+OMDB_APIKEY = a58446f4
+```
+
+</details>
+
 ## Running the app
 
 ```bash
