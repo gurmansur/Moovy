@@ -4,7 +4,7 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, getLibrary }) => {
 
     const [info, setInfo] = useState({});
     const [inLibrary, setInLibrary] = useState(false);
@@ -28,6 +28,10 @@ const MovieCard = ({ movie }) => {
                 imdbId: movie.imdbID
             })
 
+            if (getLibrary !== undefined) {
+                getLibrary();
+            }
+
             requestInfo();
             setInLibrary(true);
         } catch (error) {
@@ -42,6 +46,10 @@ const MovieCard = ({ movie }) => {
                     id: libraryId
                 }
             })
+
+            if (getLibrary !== undefined) {
+                getLibrary();
+            }
 
             requestInfo();
             setInLibrary(false);

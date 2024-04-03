@@ -41,7 +41,7 @@ const Search = ({setSelectedTab}) => {
 
     useEffect(() => {
         checkAuthorized();
-    })
+    }, [])
 
     return (
         <div>
