@@ -22,6 +22,12 @@ const Register = ({setUser, setLoggedIn}) => {
         setPassword(event.target.value);
     };
 
+    const pressEnter = (e) => {
+        if (e.keyCode === 13) {
+          register();
+        }
+    };
+
     const register = async() => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_MOOVY_BACKEND}users`, {
@@ -81,6 +87,7 @@ const Register = ({setUser, setLoggedIn}) => {
                     </InputLabel>
                     <Input
                     id="input-with-icon-adornment"
+                    onKeyDown={(e) => pressEnter(e)}
                     startAdornment={
                         <InputAdornment position="start">
                             <AccountBox />
@@ -97,6 +104,7 @@ const Register = ({setUser, setLoggedIn}) => {
                     <Input
                     id="input-with-icon-adornment"
                     type='password'
+                    onKeyDown={(e) => pressEnter(e)}
                     startAdornment={
                         <InputAdornment position="start">
                             <LockIcon />

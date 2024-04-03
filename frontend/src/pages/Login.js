@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 
 const Login = ({setUser, setLoggedIn}) => {
 
-    const login = async(username, password) => {
+    const login = async() => {
         try{
             const response = await axios.post(`${process.env.REACT_APP_MOOVY_BACKEND}auth/login`, {
                 username: username,
@@ -45,6 +45,12 @@ const handlePasswordChange = (event) => {
     setPassword(event.target.value);
 };
 
+const pressEnter = (e) => {
+    if (e.keyCode === 13) {
+      login();
+    }
+};
+
 return (
     <Box>
         <Container maxWidth="xs">
@@ -77,6 +83,7 @@ return (
                         </InputLabel>
                         <Input
                         id="input-with-icon-adornment"
+                        onKeyDown={(e) => pressEnter(e)}
                         startAdornment={
                             <InputAdornment position="start">
                                 <AccountBox />
@@ -93,6 +100,7 @@ return (
                         <Input
                         id="input-with-icon-adornment"
                         type='password'
+                        onKeyDown={(e) => pressEnter(e)}
                         startAdornment={
                             <InputAdornment position="start">
                                 <LockIcon />
