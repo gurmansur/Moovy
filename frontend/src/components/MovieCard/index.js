@@ -39,8 +39,9 @@ const MovieCard = ({ movie, getLibrary }) => {
                await getLibrary();
             }
 
-            setInLibrary(true);
+            await checkLibrary(movie.imdbID)
 
+            setInLibrary(true);
             setLoading(false);
         } catch (error) {
             setInLibrary(false);
@@ -51,7 +52,6 @@ const MovieCard = ({ movie, getLibrary }) => {
     const removeFromLibrary = async () => {
         try {
             setLoading(true);
-            console.log(loading);
             
             await axios.delete('http://127.0.0.1:3001/library-entries/', {
                 data: {
@@ -65,8 +65,9 @@ const MovieCard = ({ movie, getLibrary }) => {
                 await getLibrary();
             }
 
-            setLoading(false);
+            await checkLibrary(movie.imdbID);
             setInLibrary(false);
+            setLoading(false);
         } catch (error) {
             setInLibrary(true);
             console.error(error);
@@ -80,10 +81,12 @@ const MovieCard = ({ movie, getLibrary }) => {
 
             let found = library.data.find(m => m.imdbId === imdbId);
 
-            setInLibrary(found !== undefined);
-
             if (found !== undefined) {
                 setLibraryId(found.id);
+                console.log(libraryId);
+                setInLibrary(true);
+            } else {
+                setInLibrary(false);
             }
         } catch (error) {
         }
