@@ -2,7 +2,7 @@
 Clone the repository
 
 ```bash
-git clone git@github.com:gurmansur/Moovy.git
+git clone https://github.com/gurmansur/Moovy.git
 ```
 
 Go to the Moovy directory
