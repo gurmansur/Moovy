@@ -83,7 +83,6 @@ const MovieCard = ({ movie, getLibrary, handleAlert, loading, setLoading, isInLi
 
             if (found !== undefined) {
                 setLibraryId(found.id);
-                console.log(libraryId);
                 setInLibrary(true);
             } else {
                 setInLibrary(false);

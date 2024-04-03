@@ -26,7 +26,7 @@ const Login = ({setUser, setLoggedIn}) => {
 
             return navigate('/my-library');
         } catch (e) {
-            console.log(e);
+            console.error(e);
             setAlert(true);
         }
     }
