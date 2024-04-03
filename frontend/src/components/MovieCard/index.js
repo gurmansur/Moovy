@@ -75,6 +75,7 @@ const MovieCard = ({ movie, getLibrary }) => {
     }
 
     useEffect(() => {
+        checkLibrary(movie.imdbID);
         requestInfo();
     }, [movie])
 
