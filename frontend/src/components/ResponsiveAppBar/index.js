@@ -97,9 +97,15 @@ const ResponsiveAppBar = ({ user, setUser, selectedTab, setSelectedTab }) => {
               }}
             >
               {pages.map((page) => (
+                <Link
+                  to={`/${page.toLowerCase().replace(' ', '-')}`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                  onClick={() => handleTabClick(page)}
+                >
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
